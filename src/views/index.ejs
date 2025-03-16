@@ -1,64 +1,116 @@
-<%- include('includes/head') %> <%- include('includes/nav') %>
+<%- include('includes/head') %>
 
-<!-- Caminho atualizado para o CSS -->
 <link rel="stylesheet" href="/css/styles.css" />
-
-<div class="login-container">
-  <!-- Lado esquerdo azul -->
-  <div class="left-side"></div>
-
-  <!-- Lado direito - Lista de contatos -->
-  <div class="right-side">
-    <div class="login-box">
-      <h1 class="text-center">Agenda</h1>
-      <p class="text-center lead">Seus contatos estão abaixo</p>
-
-      <%- include('includes/messages') %> <% if(contatos.length > 0) { %>
-      <div class="responsive-table">
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Sobrenome</th>
-              <th>Telefone</th>
-              <th>Email</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% contatos.forEach(contato => { %>
-            <tr>
-              <td><%= contato.nome %></td>
-              <td><%= contato.sobrenome %></td>
-              <td><%= contato.telefone %></td>
-              <td><%= contato.email %></td>
-              <td>
-                <a
-                  href="/contato/index/<%= contato._id %>"
-                  class="btn btn-sm btn-warning"
-                  >Editar</a
-                >
-                <a
-                  href="/contato/delete/<%= contato._id %>"
-                  class="btn btn-sm btn-danger"
-                  >Excluir</a
-                >
-              </td>
-            </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-      <% } else { %>
-      <p class="text-center lead">Não existem contatos na sua agenda.</p>
-      <div class="text-center mt-4 p-3">
-        <h5 class="mb-2">Click abaixo para adicionar novo contato</h5>
-        <a href="/contato/index" class="btn btn-success">Adicionar Contato</a>
-      </div>
-      <% } %>
-      <!-- Caixa de Cadastrar Contato -->
-    </div>
+<div class="navbar navbar-dark bg-light-subtle">
+  <% if (user) { %>
+  <div class="user-info">
+    <h3><%= user.username %></h3>
+    <p><%= user.email %></p>
   </div>
+  <a class="nav-link ms-auto" href="/login/logout">Sair</a>
+  <% } else { %>
+  <a class="nav-link" href="/login/index">Entrar</a>
+  <p>Faça login para acessar sua agenda</p>
+  <% } %>
+</div>
+<div class="agenda-container">
+  <!-- Barra lateral com categorias -->
+  <aside class="sidebar">
+    <div class="user-info">
+      <% if (user) { %>
+      <h3><%= user.username %></h3>
+      <p><%= user.email %></p>
+      <% } else { %>
+      <a class="nav-link" href="/login/index">Entrar</a>
+      <p>Faça login para acessar sua agenda</p>
+      <% } %>
+    </div>
+    <ul class="categories">
+      <li class="active" data-categoria="todos">Todos os Contatos</li>
+      <li class="category green" data-categoria="Melhores Amigos">
+        Melhores Amigos
+      </li>
+      <li class="category blue" data-categoria="Trabalho">Trabalho</li>
+      <li class="category purple" data-categoria="Amigos da Faculdade">
+        Amigos da Faculdade
+      </li>
+      <li class="category gray">
+        <a class="nav-link" href="/contato/index">+</a>
+      </li>
+    </ul>
+    <%- include('includes/messages') %>
+  </aside>
+
+  <!-- Lista de contatos -->
+  <main class="contacts-list">
+    <h4>
+      <a class="nav-link" href="/"><strong>MyAgenda</strong></a>
+    </h4>
+    <div class="contacts">
+      <% contatos.forEach(contato => { %>
+      <div class="contact-card" data-categoria="<%= contato.categoria %>">
+        <img
+          src="/images/avatar.png"
+          alt="<%= contato.nome %>"
+          class="contact-avatar"
+        />
+        <div class="contact-info">
+          <p><strong>Nome:</strong> <%= contato.nome %></p>
+          <p><strong>Contato:</strong> <%= contato.telefone %></p>
+          <p><strong>E-mail:</strong> <%= contato.email %></p>
+        </div>
+        <div class="contact-actions">
+          <span
+            class="category-label <%= contato.categoria === 'Melhores Amigos' ? 'green' : contato.categoria === 'Trabalho' ? 'blue' : contato.categoria === 'Amigos da Faculdade' ? 'purple' : 'gray' %>"
+          >
+            <%= contato.categoria %>
+          </span>
+          <a href="/contato/index/<%= contato._id %>" class="btn btn-edit"
+            >EDITAR</a
+          >
+          <a
+            href="/contato/delete/<%= contato._id %>"
+            class="btn btn-sm btn-danger"
+            >Excluir</a
+          >
+        </div>
+      </div>
+      <% }); %>
+    </div>
+  </main>
 </div>
 
 <%- include('includes/footer') %>
+
+<!-- Script para filtrar contatos por categoria -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const categorias = document.querySelectorAll(".categories li");
+    const contatos = document.querySelectorAll(".contact-card");
+
+    categorias.forEach((categoria) => {
+      categoria.addEventListener("click", function () {
+        // Remove a classe 'active' de todos os itens
+        categorias.forEach((item) => item.classList.remove("active"));
+        // Adiciona a classe 'active' ao item clicado
+        this.classList.add("active");
+
+        const categoriaSelecionada = this.getAttribute("data-categoria");
+
+        // Filtra os contatos
+        contatos.forEach((contato) => {
+          const contatoCategoria = contato.getAttribute("data-categoria");
+
+          if (
+            categoriaSelecionada === "todos" ||
+            contatoCategoria === categoriaSelecionada
+          ) {
+            contato.style.display = "block"; // Exibe o contato
+          } else {
+            contato.style.display = "none"; // Oculta o contato
+          }
+        });
+      });
+    });
+  });
+</script>

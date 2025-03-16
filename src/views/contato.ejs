@@ -31,11 +31,6 @@
         </div>
 
         <div class="form-group">
-          <label>Sobrenome</label>
-          <input value="<%= contato.sobrenome %>" type="text" class="form-control" name="sobrenome">
-        </div>
-
-        <div class="form-group">
           <label>Email</label>
           <input value="<%= contato.email %>" type="email" class="form-control" name="email">
         </div>
@@ -45,18 +40,65 @@
           <input value="<%= contato.telefone %>" type="tel" class="form-control" name="telefone">
         </div>
 
+        <div class="form-group">
+          <label>Categoria</label>
+          <select class="form-control" name="categoria" id="categoria" required>
+            <option value="">Selecione uma categoria</option>
+            <option value="Melhores Amigos" <%= contato.categoria === 'Melhores Amigos' ? 'selected' : '' %>>Melhores Amigos</option>
+            <option value="Trabalho" <%= contato.categoria === 'Trabalho' ? 'selected' : '' %>>Trabalho</option>
+            <option value="Amigos da Faculdade" <%= contato.categoria === 'Amigos da Faculdade' ? 'selected' : '' %>>Amigos da Faculdade</option>
+          </select>
+        </div>
+
+        <!-- Área para exibir a categoria selecionada -->
+        <div id="categoria-selecionada" class="mt-3">
+          <% if (contato.categoria) { %>
+            <a href="#" class="category-link 
+              <%= contato.categoria === 'Melhores Amigos' ? 'green' : 
+                  contato.categoria === 'Trabalho' ? 'blue' : 
+                  contato.categoria === 'Amigos da Faculdade' ? 'orange' : '' %>">
+              <%= contato.categoria %>
+            </a>
+          <% } %>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block">Salvar</button>
         
-     
         <!-- Caixa de Cadastrar Contato -->
-      <div class="text-center mt-4 p-3">
-        <h6 class="mb-2">Click para listar os seus contatos</h6>
-        <a href="/" class="btn btn-success">Agenda</a>
-      </div>
-
+        <div class="text-center mt-4 p-3">
+          <h6 class="mb-2">Click para listar os seus contatos</h6>
+          <a href="/" class="btn btn-success">Agenda</a>
+        </div>
       </form>
     </div>
   </div>
 </div>
+
+<!-- Script para exibir a categoria selecionada -->
+<script>
+  document.getElementById('categoria').addEventListener('change', function() {
+    const categoriaSelecionada = this.value;
+    const categoriaDisplay = document.getElementById('categoria-selecionada');
+
+    if (categoriaSelecionada) {
+      let className = '';
+      if (categoriaSelecionada === 'Melhores Amigos') {
+        className = 'green';
+      } else if (categoriaSelecionada === 'Trabalho') {
+        className = 'blue';
+      } else if (categoriaSelecionada === 'Amigos da Faculdade') {
+        className = 'orange';
+      }
+
+      categoriaDisplay.innerHTML = `
+        <a href="#" class="category-link ${className}">
+          ${categoriaSelecionada}
+        </a>
+      `;
+    } else {
+      categoriaDisplay.innerHTML = '';
+    }
+  });
+</script>
 
 <%- include('includes/footer') %>

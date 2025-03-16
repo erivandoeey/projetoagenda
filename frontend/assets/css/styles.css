@@ -242,3 +242,162 @@
 #register-section #show-login:hover {
   text-decoration: underline;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f2f5;
+}
+
+.agenda-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Barra lateral */
+.sidebar {
+  width: 250px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.user-avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+}
+
+.categories {
+  list-style: none;
+  padding: 0;
+}
+
+.categories li {
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.active {
+  background-color: #ddd;
+}
+.green {
+  background-color: #a8e6a3;
+}
+.blue {
+  background-color: #86c5fa;
+}
+.purple {
+  background-color: #b3a1f7;
+}
+.gray {
+  background-color: #ccc;
+}
+
+/* Lista de contatos */
+.contacts-list {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  color: #007b8f;
+}
+
+.contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-card {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.contact-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+.contact-info {
+  flex-grow: 1;
+}
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.category-label {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.btn-edit {
+  background-color: #007b8f;
+  color: #fff;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 3px;
+}
+
+/* novo */
+
+.category-link {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.green {
+  background-color: #28a745; /* Verde para Melhores Amigos */
+}
+
+.blue {
+  background-color: #007bff; /* Azul para Trabalho */
+}
+
+.orange {
+  background-color: #ffc107; /* Laranja para Amigos da Faculdade */
+}
+
+/* 03 */
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinha o texto à esquerda */
+  margin-right: auto; /* Empurra o conteúdo para a esquerda */
+}
+
+.navbar {
+  padding: 10px 20px;
+  width: 100%; /* Adiciona um pouco de espaçamento interno */
+}
+
+.nav-link {
+  margin-left: 10px; /* Espaçamento entre os elementos */
+}

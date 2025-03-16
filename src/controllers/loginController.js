@@ -1,7 +1,10 @@
 const Login = require("../models/LoginModel");
 
 exports.index = (req, res) => {
-  if (req.session.user) return res.render("login-logado");
+  if (req.session.user) {
+    // Passa o usuário logado para o template
+    return res.render("login-logado", { user: req.session.user });
+  }
   return res.render("login");
 };
 

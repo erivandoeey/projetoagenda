@@ -3,9 +3,13 @@ const validator = require("validator");
 
 const ContatoSchema = new mongoose.Schema({
   nome: { type: String, required: true },
-  sobrenome: { type: String, required: false, default: "" },
   email: { type: String, required: false, default: "" },
   telefone: { type: String, required: false, default: "" },
+  categoria: {
+    type: String,
+    enum: ["Melhores Amigos", "Trabalho", "Amigos da Faculdade"],
+    required: true,
+  },
   criadoEm: { type: Date, default: Date.now },
 });
 
@@ -17,7 +21,7 @@ function Contato(body) {
   this.contato = null;
 }
 
-// Função para formatar nome e sobrenome
+// Função para formatar nome
 function formatarNome(nome) {
   return nome
     .toLowerCase()
@@ -62,16 +66,6 @@ Contato.prototype.valida = function () {
     }
   }
 
-  // Validação do sobrenome
-  if (this.body.sobrenome) {
-    // Verifica se o sobrenome começa com letra maiúscula, tem mais de 3 caracteres e não contém números
-    const sobrenomeRegex = /^[A-ZÀ-Ú][a-zà-ú\s]{2,}$/;
-    if (!sobrenomeRegex.test(this.body.sobrenome)) {
-      this.errors.push(
-        "Sobrenome deve começar com letra maiúscula, ter mais de 3 caracteres e não pode conter números."
-      );
-    }
-  }
   // Validação do e-mail
   if (this.body.email && !validator.isEmail(this.body.email)) {
     this.errors.push("E-mail inválido");
@@ -97,6 +91,17 @@ Contato.prototype.valida = function () {
       "Pelo menos um contato precisa ser enviado: e-mail ou telefone."
     );
   }
+
+  // Validação da categoria
+  if (!this.body.categoria) {
+    this.errors.push("Categoria é um campo obrigatório.");
+  } else if (
+    !["Melhores Amigos", "Trabalho", "Amigos da Faculdade"].includes(
+      this.body.categoria
+    )
+  ) {
+    this.errors.push("Categoria inválida.");
+  }
 };
 
 Contato.prototype.cleanUp = function () {
@@ -106,19 +111,16 @@ Contato.prototype.cleanUp = function () {
     }
   }
 
-  // Formata nome e sobrenome
+  // Formata nome
   if (this.body.nome) {
     this.body.nome = formatarNome(this.body.nome);
-  }
-  if (this.body.sobrenome) {
-    this.body.sobrenome = formatarNome(this.body.sobrenome);
   }
 
   this.body = {
     nome: this.body.nome,
-    sobrenome: this.body.sobrenome,
     email: this.body.email,
     telefone: this.body.telefone,
+    categoria: this.body.categoria,
   };
 };
 
