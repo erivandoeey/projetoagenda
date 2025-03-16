@@ -1,25 +1,21 @@
-<%- include('includes/head') %>
-<%- include('includes/nav') %>
+<%- include('includes/head') %> <%- include('includes/nav') %>
 
 <!-- Caminho atualizado do CSS -->
-<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet" href="/css/styles.css" />
 
 <div class="login-container">
   <!-- Lado esquerdo azul -->
-  <div class="left-side">
-    <h2>Bem-vindo à nossa plataforma</h2>
-    <p>Gerencie seus contatos com facilidade e segurança.</p>
-  </div>
+  <div class="left-side"></div>
 
   <!-- Lado direito - Área de login -->
   <div class="right-side">
     <div class="login-box">
-      <h1 class="text-center">Olá, <%= user.email %></h1>
+      <h1 class="text-center">Olá, <%= user.username %></h1>
       <p class="text-center lead">Você precisa sair para criar outra conta.</p>
-      <div class="text-center mt-4 p-3 ">
+      <div class="text-center mt-4 p-3">
         <%- include('includes/messages'); %>
-          <h5 class="mb-2">Click abaixo para adicionar um contato</h5>
-          <a href="/contato/index" class="btn btn-success">Criar Contato</a>
+        <h5 class="mb-2">Click abaixo para adicionar um contato</h5>
+        <a href="/contato/index" class="btn btn-success">Criar Contato</a>
       </div>
     </div>
   </div>

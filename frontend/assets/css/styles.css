@@ -2,22 +2,27 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  --color-branco: white;
+  --color-verde: #159a9c;
 }
 
 .login-container {
   display: flex;
-  height: 94.2vh;
-  width: 120vw;
+  height: 98vh;
+  width: 150vw;
 }
 
 .left-side {
-  background-color: #007bff; /* Azul */
-  color: white;
+  background-image: url("../Image/background.png"); /* Imagem de fundo */
+  background-size: cover; /* Cobrir todo o espaço */
+  background-position: center; /* Centralizar a imagem */
+  width: 25%; /* Largura do lado esquerdo */
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  width: 40%;
+  color: var(--color-branco);
+  text-align: center;
   padding: 40px;
 }
 
@@ -46,12 +51,194 @@
 
   .left-side {
     width: 100%;
-    height: 30%;
+    height: 50%;
     text-align: center;
   }
 
   .right-side {
     width: 100%;
-    height: 70%;
+    height: 50%;
   }
+}
+
+#login-section {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 400%;
+  height: 200%;
+
+  border-radius: 8px;
+}
+
+#login-section-titulo {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#login-section-titulo .titulo-esquerda,
+#login-section-titulo .titulo-direita {
+  display: flex;
+  align-items: center; /* Centraliza o texto verticalmente dentro de cada div */
+  justify-content: center; /* Centraliza o texto horizontalmente dentro de cada div */
+}
+
+#login-section-titulo h4 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0; /* Remove margens padrão do h4 */
+}
+
+#login-section-titulo h4 strong {
+  font-weight: bold;
+}
+
+#login-section-titulo .nav-link {
+  color: var(--color-verde);
+  text-decoration: none;
+}
+
+#login-section .form-login .form-group {
+  margin-bottom: 15px;
+}
+
+#login-section .form-login .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+#login-section .form-login .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#login-section .form-login .btn-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-verde);
+  border: none;
+  border-radius: 4px;
+  color: var(--color-branco);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#login-section .form-login .btn-primary:hover {
+  background-color: var(--color-verde);
+}
+
+#login-section .mt-3 {
+  margin-top: 15px;
+}
+
+#login-section .text-center {
+  text-align: center;
+}
+
+#login-section #show-register {
+  color: var(--color-verde);
+  text-decoration: none;
+}
+
+#login-section #show-register:hover {
+  text-decoration: underline;
+}
+
+#register-section {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 400%;
+  height: 200%;
+
+  border-radius: 8px;
+}
+
+#register-section-titulo {
+  display: flex;
+  align-items: center; /* Centraliza verticalmente */
+  justify-content: center; /* Centraliza horizontalmente */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#register-section-titulo .titulo-esquerda,
+#register-section-titulo .titulo-direita {
+  display: flex;
+  align-items: center; /* Centraliza o texto verticalmente dentro de cada div */
+  justify-content: center; /* Centraliza o texto horizontalmente dentro de cada div */
+}
+
+#register-section-titulo h4 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin: 0; /* Remove margens padrão do h4 */
+}
+
+#register-section-titulo h4 strong {
+  font-weight: bold;
+}
+
+#register-section-titulo .nav-link {
+  color: var(--color-verde);
+  text-decoration: none;
+}
+
+#register-section .form-cadastro .form-group {
+  margin-bottom: 15px;
+}
+
+#register-section .form-cadastro .form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+#register-section .form-cadastro .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+#register-section .form-cadastro .btn-primary {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--color-verde);
+  border: none;
+  border-radius: 4px;
+  color: var(--color-branco);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#register-section .form-cadastro .btn-primary:hover {
+  background-color: var(--color-verde);
+}
+
+#register-section .mt-3 {
+  margin-top: 15px;
+}
+
+#register-section .text-center {
+  text-align: center;
+}
+
+#register-section #show-login {
+  color: var(--color-verde);
+  text-decoration: none;
+}
+
+#register-section #show-login:hover {
+  text-decoration: underline;
 }
