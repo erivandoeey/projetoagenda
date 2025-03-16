@@ -2,6 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+// const path = require('path');
+
 mongoose.connect(process.env.CONNECTIONSTRING,
   {
     useNewUrlParser: true,
@@ -26,6 +28,8 @@ const { middlewareGlobal, checkCsrfError, csrfMiddleware } = require('./src/midd
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, 'frontend/assets')));
+
 
 const sessionOptions = session({
   secret: 'akasdfj0út23453456+54qt23qv  qwf qwer qwer qewr asdasdasda a6()',

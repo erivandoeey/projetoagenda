@@ -1,38 +1,62 @@
 <%- include('includes/head') %>
 <%- include('includes/nav') %>
 
-<div class="container" style="background-color: #f0f0f0; color: #333;">
-  <div class="row">
-    <div class="col-lg-2"></div>
+<!-- Caminho atualizado para o CSS -->
+<link rel="stylesheet" href="/css/styles.css">
 
-    <div class="col-lg-8 my-3">
+<div class="login-container">
+  <!-- Lado esquerdo azul -->
+  <div class="left-side">
+    <h2>Bem-vindo à sua Agenda</h2>
+    <p>Gerencie seus contatos de forma rápida e fácil.</p>
+  </div>
+
+  <!-- Lado direito - Lista de contatos -->
+  <div class="right-side">
+    <div class="login-box">
       <h1 class="text-center">Agenda</h1>
       <p class="text-center lead">Seus contatos estão abaixo</p>
 
       <%- include('includes/messages') %>
 
       <% if(contatos.length > 0) { %>
-      <div class="responsive-table">
-        <table class="table my-3">
-          <% contatos.forEach(contato => { %>
-          <tr>
-            <td><%= contato.nome %></td>
-            <td><%= contato.sobrenome %></td>
-            <td><%= contato.telefone %></td>
-            <td><%= contato.email %></td>
-            <td><a href="/contato/index/<%= contato._id %>">Editar</a></td>
-            <td><a class="text-danger" href="/contato/delete/<%= contato._id %>">Excluir</a></td>
-          </tr>
-          <% }); %>
-        </table>
-      </div>
+        <div class="responsive-table">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% contatos.forEach(contato => { %>
+              <tr>
+                <td><%= contato.nome %></td>
+                <td><%= contato.sobrenome %></td>
+                <td><%= contato.telefone %></td>
+                <td><%= contato.email %></td>
+                <td>
+                  <a href="/contato/index/<%= contato._id %>" class="btn btn-sm btn-warning">Editar</a>
+                  <a href="/contato/delete/<%= contato._id %>" class="btn btn-sm btn-danger">Excluir</a>
+                </td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
       <% } else { %>
         <p class="text-center lead">Não existem contatos na sua agenda.</p>
+        <div class="text-center mt-4 p-3 ">
+          <h5 class="mb-2">Click abaixo para adicionar novo contato</h5>
+          <a href="/contato/index" class="btn btn-success">Adicionar Contato</a>
+        </div>
       <% } %>
+      <!-- Caixa de Cadastrar Contato -->
 
     </div>
-    
-    <div class="col-lg-2"></div>
   </div>
 </div>
 
