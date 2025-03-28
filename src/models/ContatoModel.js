@@ -1,19 +1,19 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
+const mongoose = require('mongoose');
+const validator = require('validator');
 
 const ContatoSchema = new mongoose.Schema({
   nome: { type: String, required: true },
-  email: { type: String, required: false, default: "" },
-  telefone: { type: String, required: false, default: "" },
+  email: { type: String, required: false, default: '' },
+  telefone: { type: String, required: false, default: '' },
   categoria: {
     type: String,
-    enum: ["Melhores Amigos", "Trabalho", "Amigos da Faculdade"],
+    enum: ['Melhores Amigos', 'Trabalho', 'Amigos da Faculdade'],
     required: true,
   },
   criadoEm: { type: Date, default: Date.now },
 });
 
-const ContatoModel = mongoose.model("Contato", ContatoSchema);
+const ContatoModel = mongoose.model('Contato', ContatoSchema);
 
 function Contato(body) {
   this.body = body;
@@ -25,19 +25,19 @@ function Contato(body) {
 function formatarNome(nome) {
   return nome
     .toLowerCase()
-    .split(" ")
+    .split(' ')
     .map((palavra) => palavra.charAt(0).toUpperCase() + palavra.slice(1))
-    .join(" ");
+    .join(' ');
 }
 
 // Função para formatar o telefone
 Contato.prototype.formatarTelefone = function (telefone) {
   // Remove todos os caracteres que não são números
-  const numeros = telefone.replace(/\D/g, "");
+  const numeros = telefone.replace(/\D/g, '');
 
   // Aplica a máscara (xx)xxxxx-xxxx
   if (numeros.length === 11) {
-    return numeros.replace(/(\d{2})(\d{5})(\d{4})/, "($1)$2-$3");
+    return numeros.replace(/(\d{2})(\d{5})(\d{4})/, '($1)$2-$3');
   }
 
   // Retorna o telefone sem formatação se não tiver 11 dígitos
@@ -55,20 +55,20 @@ Contato.prototype.valida = function () {
 
   // Validação do nome
   if (!this.body.nome) {
-    this.errors.push("Nome é um campo obrigatório.");
+    this.errors.push('Nome é um campo obrigatório.');
   } else {
     // Verifica se o nome começa com letra maiúscula, tem mais de 3 caracteres e não contém números
     const nomeRegex = /^[A-ZÀ-Ú][a-zà-ú\s]{2,}$/;
     if (!nomeRegex.test(this.body.nome)) {
       this.errors.push(
-        "Nome deve começar com letra maiúscula, ter mais de 3 caracteres e não pode conter números."
+        'Nome deve começar com letra maiúscula, ter mais de 3 caracteres e não pode conter números.'
       );
     }
   }
 
   // Validação do e-mail
   if (this.body.email && !validator.isEmail(this.body.email)) {
-    this.errors.push("E-mail inválido");
+    this.errors.push('E-mail inválido');
   }
 
   // Validação e formatação do telefone
@@ -78,7 +78,7 @@ Contato.prototype.valida = function () {
     // Verifica se o telefone foi formatado corretamente
     const telefoneRegex = /^\(\d{2}\)\d{5}-\d{4}$/;
     if (!telefoneRegex.test(telefoneFormatado)) {
-      this.errors.push("Telefone inválido. Use o formato (XX)XXXXX-XXXX.");
+      this.errors.push('Telefone inválido. Use o formato (XX)XXXXX-XXXX.');
     } else {
       // Atualiza o telefone no body com o valor formatado
       this.body.telefone = telefoneFormatado;
@@ -88,26 +88,26 @@ Contato.prototype.valida = function () {
   // Validação de pelo menos um contato (e-mail ou telefone)
   if (!this.body.email && !this.body.telefone) {
     this.errors.push(
-      "Pelo menos um contato precisa ser enviado: e-mail ou telefone."
+      'Pelo menos um contato precisa ser enviado: e-mail ou telefone.'
     );
   }
 
   // Validação da categoria
   if (!this.body.categoria) {
-    this.errors.push("Categoria é um campo obrigatório.");
+    this.errors.push('Categoria é um campo obrigatório.');
   } else if (
-    !["Melhores Amigos", "Trabalho", "Amigos da Faculdade"].includes(
+    !['Melhores Amigos', 'Trabalho', 'Amigos da Faculdade'].includes(
       this.body.categoria
     )
   ) {
-    this.errors.push("Categoria inválida.");
+    this.errors.push('Categoria inválida.');
   }
 };
 
 Contato.prototype.cleanUp = function () {
   for (const key in this.body) {
-    if (typeof this.body[key] !== "string") {
-      this.body[key] = "";
+    if (typeof this.body[key] !== 'string') {
+      this.body[key] = '';
     }
   }
 
@@ -125,7 +125,7 @@ Contato.prototype.cleanUp = function () {
 };
 
 Contato.prototype.edit = async function (id) {
-  if (typeof id !== "string") return;
+  if (typeof id !== 'string') return;
   this.valida();
   if (this.errors.length > 0) return;
   this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {
@@ -135,7 +135,7 @@ Contato.prototype.edit = async function (id) {
 
 // Métodos estáticos
 Contato.buscaPorId = async function (id) {
-  if (typeof id !== "string") return;
+  if (typeof id !== 'string') return;
   const contato = await ContatoModel.findById(id);
   return contato;
 };
@@ -146,7 +146,7 @@ Contato.buscaContatos = async function () {
 };
 
 Contato.delete = async function (id) {
-  if (typeof id !== "string") return;
+  if (typeof id !== 'string') return;
   const contato = await ContatoModel.findOneAndDelete({ _id: id });
   return contato;
 };

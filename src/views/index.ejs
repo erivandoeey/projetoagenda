@@ -1,116 +1,159 @@
 <%- include('includes/head') %>
-
 <link rel="stylesheet" href="/css/styles.css" />
-<div class="navbar navbar-dark bg-light-subtle">
+<div class="navbar-custom">
   <% if (user) { %>
-  <div class="user-info">
-    <h3><%= user.username %></h3>
-    <p><%= user.email %></p>
+
+  <div
+    class="user-container d-flex align-items-center justify-content-between w-100"
+  >
+    <!-- Avatar -->
+    <div class="user-avatar d-flex align-items-center">
+      <img
+        src="/Image/avatar.png"
+        alt="<%= user.username %>"
+        class="rounded-circle"
+        width="70"
+      />
+    </div>
+
+    <!-- Informações do Usuário -->
+    <div class="user-info">
+      <h4 class="mb-0"><%= user.username %></h4>
+      <p class="mb-0"><%= user.email %></p>
+    </div>
+
+    <!-- Título Central -->
+    <div class="user-title text-center flex-grow-1">
+      <h1 class="mb-0 fw-bold"><strong>MyAgenda</strong></h1>
+    </div>
+
+    <!-- Botão de Logout -->
+    <div class="user-logout">
+      <a class="nav-link text-white" href="/login/logout">Sair</a>
+    </div>
   </div>
-  <a class="nav-link ms-auto" href="/login/logout">Sair</a>
+
   <% } else { %>
-  <a class="nav-link" href="/login/index">Entrar</a>
-  <p>Faça login para acessar sua agenda</p>
+  <div class="user-info">
+    <a class="nav-link ms-auto text-white" href="/login/index">Entrar</a>
+  </div>
+  <div class="user-info">
+    <h1 class="mb-0 fw-bold"><strong>MyAgenda</strong></h1>
+  </div>
+
   <% } %>
 </div>
+
 <div class="agenda-container">
   <!-- Barra lateral com categorias -->
   <aside class="sidebar">
-    <div class="user-info">
-      <% if (user) { %>
-      <h3><%= user.username %></h3>
-      <p><%= user.email %></p>
-      <% } else { %>
-      <a class="nav-link" href="/login/index">Entrar</a>
-      <p>Faça login para acessar sua agenda</p>
-      <% } %>
-    </div>
+    <% if (user) { %>
     <ul class="categories">
-      <li class="active" data-categoria="todos">Todos os Contatos</li>
-      <li class="category green" data-categoria="Melhores Amigos">
+      <li class="item active" data-categoria="todos">Todos os Contatos</li>
+      <li class="category-green" data-categoria="Melhores Amigos">
         Melhores Amigos
       </li>
-      <li class="category blue" data-categoria="Trabalho">Trabalho</li>
-      <li class="category purple" data-categoria="Amigos da Faculdade">
+      <li class="category-blue" data-categoria="Trabalho">Trabalho</li>
+      <li class="category-purple" data-categoria="Amigos da Faculdade">
         Amigos da Faculdade
       </li>
-      <li class="category gray">
+      <li class="category-gray" onclick="window.location.href='/contato/index'">
         <a class="nav-link" href="/contato/index">+</a>
       </li>
     </ul>
-    <%- include('includes/messages') %>
+    <% } %> <%- include('includes/messages') %>
   </aside>
 
   <!-- Lista de contatos -->
   <main class="contacts-list">
-    <h4>
-      <a class="nav-link" href="/"><strong>MyAgenda</strong></a>
-    </h4>
+    <% if (user) { %>
     <div class="contacts">
-      <% contatos.forEach(contato => { %>
+      <% if (contatos.length > 0) { %> <% contatos.forEach(contato => { %>
       <div class="contact-card" data-categoria="<%= contato.categoria %>">
-        <img
-          src="/images/avatar.png"
-          alt="<%= contato.nome %>"
-          class="contact-avatar"
-        />
-        <div class="contact-info">
-          <p><strong>Nome:</strong> <%= contato.nome %></p>
-          <p><strong>Contato:</strong> <%= contato.telefone %></p>
-          <p><strong>E-mail:</strong> <%= contato.email %></p>
+        <div class="contact-card-img">
+          <img
+            src="/Image/avatar.png"
+            alt="<%= contato.nome %>"
+            class="user-avatar d-flex align-items-center"
+          />
         </div>
-        <div class="contact-actions">
+        <div class="contact-card-info">
+          <div class="contact-info">
+            <div class="info-block-nome">
+              <p>
+                <strong>Nome:</strong><br />
+                <%= contato.nome %>
+              </p>
+            </div>
+            <div class="info-block-contato">
+              <p>
+                <strong>Contato:</strong><br />
+                <%= contato.telefone %>
+              </p>
+            </div>
+            <div class="info-block-email">
+              <p>
+                <strong>E-mail:</strong><br />
+                <%= contato.email %>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-actions-spam">
           <span
-            class="category-label <%= contato.categoria === 'Melhores Amigos' ? 'green' : contato.categoria === 'Trabalho' ? 'blue' : contato.categoria === 'Amigos da Faculdade' ? 'purple' : 'gray' %>"
+            class="categoria-badge <%= contato.categoria === 'Melhores Amigos' ? 'green' : contato.categoria === 'Trabalho' ? 'blue' : contato.categoria === 'Amigos da Faculdade' ? 'purple' : 'gray' %>"
           >
             <%= contato.categoria %>
           </span>
-          <a href="/contato/index/<%= contato._id %>" class="btn btn-edit"
-            >EDITAR</a
-          >
-          <a
-            href="/contato/delete/<%= contato._id %>"
-            class="btn btn-sm btn-danger"
-            >Excluir</a
-          >
+        </div>
+        <div class="contact-actions">
+          <div class="contact-actions-editar">
+            <a href="/contato/index/<%= contato._id %>" class="btn btn-edit"
+              >EDITAR</a
+            >
+          </div>
+          <div class="contact-actions-excluir">
+            <a
+              href="/contato/delete/<%= contato._id %>"
+              class="btn btn-sm btn-danger"
+              >EXCLUIR</a
+            >
+          </div>
         </div>
       </div>
-      <% }); %>
+      <% }); %> <% } else { %>
+      <div class="alert alert-info">Nenhum contato cadastrado ainda.</div>
+      <% } %>
     </div>
+    <% } else { %>
+    <div class="alert alert-warning">Faça login para ver seus contatos</div>
+    <% } %>
   </main>
 </div>
 
-<%- include('includes/footer') %>
-
-<!-- Script para filtrar contatos por categoria -->
+<%- include('includes/footer') %> <% if (user) { %>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const categorias = document.querySelectorAll(".categories li");
-    const contatos = document.querySelectorAll(".contact-card");
+  document.addEventListener('DOMContentLoaded', function () {
+    const categorias = document.querySelectorAll('.categories li');
+    const contatos = document.querySelectorAll('.contact-card');
 
     categorias.forEach((categoria) => {
-      categoria.addEventListener("click", function () {
-        // Remove a classe 'active' de todos os itens
-        categorias.forEach((item) => item.classList.remove("active"));
-        // Adiciona a classe 'active' ao item clicado
-        this.classList.add("active");
+      categoria.addEventListener('click', function () {
+        categorias.forEach((item) => item.classList.remove('active'));
+        this.classList.add('active');
 
-        const categoriaSelecionada = this.getAttribute("data-categoria");
-
-        // Filtra os contatos
+        const categoriaSelecionada = this.getAttribute('data-categoria');
         contatos.forEach((contato) => {
-          const contatoCategoria = contato.getAttribute("data-categoria");
-
-          if (
-            categoriaSelecionada === "todos" ||
+          const contatoCategoria = contato.getAttribute('data-categoria');
+          contato.style.display =
+            categoriaSelecionada === 'todos' ||
             contatoCategoria === categoriaSelecionada
-          ) {
-            contato.style.display = "block"; // Exibe o contato
-          } else {
-            contato.style.display = "none"; // Oculta o contato
-          }
+              ? 'flex'
+              : 'none';
         });
       });
     });
   });
 </script>
+<% } %>

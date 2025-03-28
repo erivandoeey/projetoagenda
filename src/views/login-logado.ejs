@@ -1,4 +1,4 @@
-<%- include('includes/head') %> <%- include('includes/nav') %>
+<%- include('includes/head') %>
 
 <!-- Caminho atualizado do CSS -->
 <link rel="stylesheet" href="/css/styles.css" />
@@ -11,11 +11,24 @@
   <div class="right-side">
     <div class="login-box">
       <h1 class="text-center">Olá, <%= user.username %></h1>
-      <p class="text-center lead">Você precisa sair para criar outra conta.</p>
+
       <div class="text-center mt-4 p-3">
         <%- include('includes/messages'); %>
+      </div>
+      <p class="text-center lead">
+        Você precisa sair para criar ou acessar outra conta.
+      </p>
+      <div class="text-center mt-4 p-3">
         <h5 class="mb-2">Click abaixo para adicionar um contato</h5>
         <a href="/contato/index" class="btn btn-success">Criar Contato</a>
+      </div>
+      <div class="text-center mt-4 p-3">
+        <h5 class="mb-2">Click para listar os seus contatos</h5>
+        <a href="/" class="btn btn-success">Agenda</a>
+      </div>
+      <div class="text-center mt-4 p-3">
+        <h5 class="mb-2">Click para sair</h5>
+        <a class="btn btn-success" href="/login/logout">Sair</a>
       </div>
     </div>
   </div>

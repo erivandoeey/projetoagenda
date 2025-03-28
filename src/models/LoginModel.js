@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const bcryptjs = require("bcryptjs");
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcryptjs = require('bcryptjs');
 
 const LoginSchema = new mongoose.Schema({
   username: { type: String, required: true }, // Campo usado apenas no registro
@@ -8,7 +8,7 @@ const LoginSchema = new mongoose.Schema({
   password: { type: String, required: true }, // Campo usado no login
 });
 
-const LoginModel = mongoose.model("Login", LoginSchema);
+const LoginModel = mongoose.model('Login', LoginSchema);
 
 class Login {
   constructor(body) {
@@ -25,13 +25,13 @@ class Login {
     this.user = await LoginModel.findOne({ email: this.body.email });
 
     if (!this.user) {
-      this.errors.push("Usuário não existe.");
+      this.errors.push('Usuário não existe.');
       return;
     }
 
     // Verifica se a senha está correta
     if (!bcryptjs.compareSync(this.body.password, this.user.password)) {
-      this.errors.push("Senha inválida");
+      this.errors.push('Senha inválida');
       this.user = null;
       return;
     }
@@ -61,7 +61,7 @@ class Login {
         { username: this.body.username }, // Verifica se o username já existe
       ],
     });
-    if (this.user) this.errors.push("Usuário já existe.");
+    if (this.user) this.errors.push('Usuário já existe.');
   }
 
   valida() {
@@ -73,31 +73,31 @@ class Login {
       const usernameRegex = /^[A-Z][a-zA-Z]*$/;
       if (!usernameRegex.test(this.body.username)) {
         this.errors.push(
-          "O usuário deve começar com letra maiúscula e não pode conter números."
+          'O usuário deve começar com letra maiúscula e não pode conter números.'
         );
       }
 
       // Verifica o comprimento do username
       if (this.body.username.length < 3 || this.body.username.length > 50) {
-        this.errors.push("O usuário precisa ter entre 3 e 50 caracteres.");
+        this.errors.push('O usuário precisa ter entre 3 e 50 caracteres.');
       }
     }
 
     // Validação do email
     if (!validator.isEmail(this.body.email)) {
-      this.errors.push("E-mail inválido");
+      this.errors.push('E-mail inválido');
     }
 
     // Validação da senha
     if (this.body.password.length < 3 || this.body.password.length > 50) {
-      this.errors.push("A senha precisa ter entre 3 e 50 caracteres.");
+      this.errors.push('A senha precisa ter entre 3 e 50 caracteres.');
     }
   }
 
   cleanUp() {
     for (const key in this.body) {
-      if (typeof this.body[key] !== "string") {
-        this.body[key] = "";
+      if (typeof this.body[key] !== 'string') {
+        this.body[key] = '';
       }
     }
 
