@@ -11,6 +11,7 @@ const ContatoSchema = new mongoose.Schema({
     required: true,
   },
   criadoEm: { type: Date, default: Date.now },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Adicionado referência ao usuário
 });
 
 const ContatoModel = mongoose.model('Contato', ContatoSchema);
@@ -61,7 +62,7 @@ Contato.prototype.valida = function () {
     const nomeRegex = /^[A-ZÀ-Ú][a-zà-ú\s]{2,}$/;
     if (!nomeRegex.test(this.body.nome)) {
       this.errors.push(
-        'Nome deve começar com letra maiúscula, ter mais de 3 caracteres e não pode conter números.'
+        'Deve conter apenas o primeiro nome, começar com letra maiúscula, ter mais de 3 caracteres e não pode conter espaços, números ou caracteres especiais.'
       );
     }
   }
@@ -106,7 +107,7 @@ Contato.prototype.valida = function () {
 
 Contato.prototype.cleanUp = function () {
   for (const key in this.body) {
-    if (typeof this.body[key] !== 'string') {
+    if (typeof this.body[key] !== 'string' && key !== 'user') {
       this.body[key] = '';
     }
   }
@@ -121,33 +122,44 @@ Contato.prototype.cleanUp = function () {
     email: this.body.email,
     telefone: this.body.telefone,
     categoria: this.body.categoria,
+    user: this.body.user, // Mantém o campo user
   };
 };
 
-Contato.prototype.edit = async function (id) {
+Contato.prototype.edit = async function (id, userId) {
   if (typeof id !== 'string') return;
   this.valida();
   if (this.errors.length > 0) return;
-  this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {
-    new: true,
-  });
+  this.contato = await ContatoModel.findOneAndUpdate(
+    { _id: id, user: userId }, // Verificar tanto o ID do contato quanto o do usuário
+    this.body,
+    { new: true }
+  );
 };
 
 // Métodos estáticos
-Contato.buscaPorId = async function (id) {
+Contato.buscaPorId = async function (id, userId) {
   if (typeof id !== 'string') return;
-  const contato = await ContatoModel.findById(id);
+  const contato = await ContatoModel.findOne({ _id: id, user: userId }); // Verificar o usuário
   return contato;
 };
 
-Contato.buscaContatos = async function () {
-  const contatos = await ContatoModel.find().sort({ criadoEm: -1 });
+Contato.buscaContatos = async function (userId) {
+  const contatos = await ContatoModel.find({ user: userId }).sort({
+    criadoEm: -1,
+  }); // Filtrar por usuário
   return contatos;
 };
 
-Contato.delete = async function (id) {
-  if (typeof id !== 'string') return;
-  const contato = await ContatoModel.findOneAndDelete({ _id: id });
+Contato.delete = async function (id, userId) {
+  if (typeof id !== 'string') return null;
+  if (typeof userId !== 'string') return null; // Verificação extra para evitar problemas
+
+  const contato = await ContatoModel.findOneAndDelete({
+    _id: id,
+    user: userId, // Agora userId está corretamente passado como argumento
+  });
+
   return contato;
 };
 
